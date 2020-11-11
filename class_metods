@@ -1,0 +1,59 @@
+class Things:
+    pass
+
+
+class Inanimate(Things):
+    def this_is_a_class_function(self):
+        print('это функция класса неодушевленных')
+
+
+class Animate(Things):
+    pass
+
+
+class Animals(Animate):
+    def breathe(self): #аргумент self дает функции класса возможность вызывать другие функции этого класса
+        print('breathe')
+    def move(self):
+        print('move')
+    def eat_food(self):
+        print('eat')
+
+
+class Mammals(Animals):
+    def feed_young_with_milk(self):
+        print('feed young with milk')
+
+class Giraffes(Mammals):
+    def eat_leaves_from_trees(self):
+        print('eat_leaves')
+    def find_food(self):
+        self.move() #аргумент self используется для вызова в функции других функций в этом классе
+        print('i found a food')
+        self.eat_food()
+    def dance_a_jig(self):
+        self.move()
+        self.move()
+        self.move()
+    def __init__(self, spots, color): #функция __init__ позволяет задать свойства объекта при его создании, для каждого нового объекта вызывается автоматически
+        self.giraffe_spots = spots
+        self.giraffe_color = color
+
+
+reginald = Giraffes(100, 'red') #100 - агрумент созданный лагодаря __init__
+print('Reginald:')
+print('spots:', reginald.giraffe_spots)
+print('color:', reginald.giraffe_color)
+reginald.move()
+reginald.eat_food()
+reginald.feed_young_with_milk()
+reginald.dance_a_jig()
+
+print()
+
+harold = Giraffes(123, 'black')
+print('Harold:')
+print('spots:', harold.giraffe_spots)
+print('color:', harold.giraffe_color)
+harold.feed_young_with_milk()
+harold.eat_leaves_from_trees()
