@@ -1,0 +1,66 @@
+import openpyxl as op
+from openpyxl.styles import PatternFill, Border, Side, Alignment, Protection, Font, Side
+from datetime import datetime
+
+# Создать рабочую книгу в Excel:
+wb = op.Workbook()
+
+# создание листа при создании новой книги первый лист создается по умолчанию и является активным. Этона случай если нужен еще лист
+sheet = wb.active
+
+
+# Сегодняшнее число
+dt = datetime.now()
+
+# определяем стили
+font = Font( name='Calibri',
+             size=11,
+             bold=False,
+             italic=False,
+             vertAlign=None,
+             underline='none',
+             strike=False,
+             color='FF000000' )
+
+# Ввод данных
+row = 1
+A = 0
+# ввод завершен
+done = False
+# пока ввод не завершен
+while not done:
+    A += 1
+    print( 'FullName: ' )
+    B = input()
+    print( 'Gender: ' )
+    C = input()
+    print( 'DateOfBirth: ' )
+    D = input()
+    print( 'City: ' )
+    E = input()
+    print( 'DiscountCardNumber: ' )
+    F = input()
+
+    # добавить полученные данные в текущий лист
+    sheet['A'+str( row )] = A
+    sheet['B'+str( row )] = B
+    sheet['C'+str( row )] = C
+    sheet['D'+str( row )] = D
+    sheet['E'+str( row )] = E
+    sheet['F'+str( row )] = F
+
+    # вывести содержимое листа
+    for row_data in sheet.iter_rows( values_only=True ) :
+        print( row_data )
+
+    # перейти на следующую строку
+    row += 1
+
+    # запросить окончание работы
+    print( 'If the input is complete write 0, if not press Enter' )
+    done = bool( input() == '0' )
+
+# сохранить книгу
+wb.save( 'Clients.xlsx' )
+
+wb.close()
