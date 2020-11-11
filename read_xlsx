@@ -1,0 +1,27 @@
+import openpyxl as op
+import pandas as pd
+
+#открываем файл
+#workbook = op.load_workbook('Employee.xlsx', read_only=True) #только для чтения, также если файл хранится там же где файл py
+workbook = op.load_workbook(r"C:\Users\shest\PycharmProjects\untitled5\alternative2\Employee.xlsx")
+
+
+#указываем нужную страницу
+sheet = workbook.worksheets[0]
+# или так, ели знаем название листа sheet = workbook['Sheet1']
+
+#считываем значение определенной ячейки
+val = sheet['A1'].value
+print(val)
+
+#циклом считываем по-столбцам
+for row in sheet.rows:
+    print(row[0].value, row[1].value, row[2].value, row[3].value)
+
+#записываем значение в определенную ячейку
+sheet['A6'] = val
+
+# сохраняем данные
+workbook.save(r"C:\Users\shest\PycharmProjects\untitled5\alternative2\Employee.xlsx")
+
+workbook.close()
