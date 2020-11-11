@@ -1,0 +1,35 @@
+#Фибоначи: Число Фибоначчи Количество элементов, Сумма четных элементов
+
+#поиск значений для введенного Фибоначчи
+n = int(input())
+
+fib = [0, 1] +[0]*(n - 1)
+for i in range(2, n+1):
+    fib[i] = fib[i-1] + fib[i-2]
+#вывод четных
+for e in fib:
+    if e % 2 == 0:
+        print(e, end=' ')
+
+sumEvenFib = sum(s for s in fib if s % 2 == 0)
+
+print('Количество элементов:', len(fib))
+print('Число Фибоначчи:', fib[n])
+print('Сумма четных элементов:', sumEvenFib)
+
+_____________________________________________
+# вывод чисел фибоначи
+
+x = int(input())
+
+c = 0
+fib = [0, 1]
+i = -1
+while c <= x - 1:
+    i += 1
+    if i > 1:
+        fib.append( 0 )
+        fib[i] = fib[i-1] + fib[i-2]
+    if fib[i] % 2 == 0:
+        print( fib[i], end=' ' )
+        c += 1
