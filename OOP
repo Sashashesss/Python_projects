@@ -1,0 +1,80 @@
+from abc import ABCMeta, abstractmethod #импорт пакета для реализации абстрактного метода в python
+
+#singleton. Само приложение является singleton
+class Application:
+    #реализация паттерна singleton на python
+    def __new__(cls): #переопределение метода для создания объектов.
+        if not hasattr(cls, 'instance'): #использование метода hasattr для проверки существования свойства instance
+            cls.instance = super(Application, cls).__new__(cls) #создание свойства instance которое хранит ссылку на singleton
+        return cls.instance #если instance есть, то возвращается ссылка на singleton
+    #основная логика программы
+    def run(self):
+        print('Размер бонуса для сотрудников:')
+        self.shop1 = self.factory('shop') #создание атрибута в который factory method возвращает объект классса
+        #инкапсуляция (не даю доступа напрямую к данным, а реализую через метод)
+        self.shop1.set_currentpeople(40) #наследованние, тк реализвано в родительском department
+        self.shop1.set_profit(10000) #не наследование, тк реализация есть в самом shops классе
+        print('shop1:  ', self.shop1.bonus())
+        self.shop2 = self.factory('shop')
+        self.shop2.set_currentpeople(25)
+        self.shop2.set_profit(25000)
+        print('shop2:  ', self.shop2.bonus())
+        self.office1 = self.factory('office')
+        self.office1.set_currentpeople(15)
+        self.office1.set_marketingprofit(27000)
+        print('office1:', self.office1.bonus())
+        self.office2 = self.factory('office')
+        self.office2.set_currentpeople(20)
+        self.office2.set_marketingprofit(29000)
+        print('office2:', self.office2.bonus())
+    #factory method
+    def factory(self, format: str):
+        if format == 'shop':
+            return Shops() #создается объект класса shops и возвращается ссылка на него
+        elif format == 'office':
+            return Offices()
+        else:
+            raise ValueError(format)
+
+#наследование. department - родитель классов shops и offices
+class Department(metaclass=ABCMeta):
+    #конструктор объектов
+    # нэйминг "_name" в python принято использовать для private атрибутов и методов.
+    def __init__(self):
+        self._maxpeople = 0
+        self._currentpeople = 0
+    #инкапсуляция, наследование. Метод родителя.
+    def set_currentpeople(self,currp):
+        if currp <= self._maxpeople:
+            self._currentpeople = currp
+        else:
+            raise ValueError( currp )
+    #полиморфизм. Абстрактный метод родителя
+    #абстрактный метод должен быть обязательно реализован в потомках
+    @abstractmethod
+    def bonus(self):
+            pass
+
+class Shops(Department):
+    def __init__(self):
+        Department.__init__(self)
+        self._maxpeople = 40
+    #полиморфизм для shops
+    def bonus(self) :
+        self._bonus = (self._profit * 0.05) / self._currentpeople
+        return self._bonus
+    def set_profit(self,profit: int):
+        self._profit = profit
+
+class Offices(Department):
+    def __init__(self):
+        self._marketingprofit = 0
+        self._maxpeople = 20
+    #полиморфизм для offices
+    def bonus(self):
+        self._bonus = (self._marketingprofit * 0.2) / self._currentpeople
+        return self._bonus
+    def set_marketingprofit(self,mprofit: int):
+        self._marketingprofit = mprofit
+
+Application().run()
